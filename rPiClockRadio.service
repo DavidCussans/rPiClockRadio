@@ -1,0 +1,12 @@
+[Unit]
+Description=Clock Radio Running on rPi. On %I
+After=network.target
+
+[Service]
+PrivateTmp=false
+Type=simple
+PIDFile=/var/run/rPiClockRadio_%i.pid
+ExecStart=/home/pi/rPiClockRadio/dumb-clock.py &
+
+[Install]
+WantedBy=multi-user.target

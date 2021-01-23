@@ -4,6 +4,7 @@ from PIL import Image, ImageFont, ImageDraw
 import datetime
 import time
 import os
+import logging
 
 class clockDisplay:
     """Display text on GFX Hat"""
@@ -12,7 +13,7 @@ class clockDisplay:
         self.font = ImageFont.truetype(fonts.FredokaOne, 38)
         #self.width, self.height = lcd.dimensions()
         self.width, self.height = self.font.getsize("88:88")
-        print ("clockDisplay width, height = " ,  self.width, self.height )
+        logging.info("clockDisplay width, height = {} , {}".format( self.width, self.height) )
         
     def drawTime(self):
         self.image = Image.new('P', (self.width, self.height))

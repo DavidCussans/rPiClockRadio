@@ -4,13 +4,16 @@ from PIL import Image, ImageFont, ImageDraw
 import datetime
 import time
 import os
+import logging
+import config
 
 class buttonActions:
     """Set up handler to respond to button presses"""
 
-    def __init__(self):
-        self.playing = False
-
+    def __init__(self,config):
+        # self.playing = False
+        self.myConfig = config
+        
         for x in range(6):
             backlight.set_pixel(x, 0, 128, 0)
 
@@ -18,41 +21,43 @@ class buttonActions:
 
         def handlerVolumeUp(ch, event):
             if event == 'press':
-                print ("Volume Up")
+                logging.info("Volume Up")
                 os.system("mpc volume +5")
 
         def handlerVolumeDown(ch, event):
             if event == 'press':
-                print ("Volume Up")
+                logging.info("Volume Up")
                 os.system("mpc volume -5")        
 
         def handler2(ch, event):
             if event == 'press':
-                print ("Press on button 2")
+                logging.info("Press on button 2")
 
         def handler3(ch, event):
             if event == 'press':
-                print ("Press on button 3")
+                logging.info("Press on button 3")
 
         def handlerOnOff(ch, event):
             if event == 'press':
-                if not self.playing: # if 
-                    print ("On")
-                    os.system("mpc play")
-                    self.playing = True
+                if not self.myConfig.getPlayState(): # if 
+                    logging.info("On")
+                    #os.system("mpc play")
+                    self.myConfig.setPlayState(True)
+                    self.setPlaying(self.myConfig.getPlayState() )
                 else:
-                    print ("Off")
-                    os.system("mpc stop")
-                    self.playing = False
-
+                    logging.info("Off")
+                    #os.system("mpc stop")
+                    self.myConfig.setPlayState(False)
+                    self.setPlaying(self.myConfig.getPlayState() )
+                    
         def handlerOff(ch, event):
             if event == 'press':
-                print ("Off")
+                logging.info("Off")
                 os.system("mpc stop")
 
 
 
-        print("Registering button handlers....")
+        logging.info("Registering button handlers....")
         touch.on(0,handlerVolumeUp)
         touch.on(1,handlerVolumeDown)
         touch.on(2,handler2)
@@ -60,5 +65,11 @@ class buttonActions:
         touch.on(4,handlerOnOff)
         touch.on(5,handlerOff)
 
-        os.system("mpc play")
+        self.setPlaying(True)
         
+    def setPlaying(self,playState):
+        logging.info("setting playing state to {}".format(playState) )
+        if playState:
+            os.system("mpc play")
+        else:
+            os.system("mpc stop")
