@@ -6,7 +6,7 @@ After=network.target
 PrivateTmp=false
 Type=simple
 PIDFile=/var/run/rPiClockRadio_%i.pid
-ExecStart=/home/pi/rPiClockRadio/dumb-clock.py &
+ExecStart=/home/pi/rPiClockRadio/dumb-clock.py
 
 [Install]
 WantedBy=multi-user.target
