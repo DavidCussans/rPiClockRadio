@@ -10,9 +10,10 @@ import config
 class buttonActions:
     """Set up handler to respond to button presses"""
 
-    def __init__(self,config):
+    def __init__(self,config,display):
         # self.playing = False
         self.myConfig = config
+        self.myDisplay = display
         
         for x in range(6):
             backlight.set_pixel(x, 0, 128, 0)
@@ -22,12 +23,20 @@ class buttonActions:
         def handlerVolumeUp(ch, event):
             if event == 'press':
                 logging.info("Volume Up")
-                os.system("mpc volume +5")
-
+                volume = self.myConfig.getVolume()
+                volume = volume + 5
+                os.system("mpc volume %d"%(volume))
+                self.myDisplay.drawVolume(volume)
+                self.myConfig.setVolume(volume)
+                
         def handlerVolumeDown(ch, event):
             if event == 'press':
-                logging.info("Volume Up")
-                os.system("mpc volume -5")        
+                logging.info("Volume Down")
+                volume = self.myConfig.getVolume()
+                volume = volume - 5
+                os.system("mpc volume %d"%(volume))
+                self.myDisplay.drawVolume(volume)
+                self.myConfig.setVolume(volume)                
 
         def handler2(ch, event):
             if event == 'press':

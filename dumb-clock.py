@@ -40,7 +40,7 @@ scheduler = BlockingScheduler()
 
 display = clockDisplay.clockDisplay()
 
-buttons = buttonActions.buttonActions(config)
+buttons = buttonActions.buttonActions(config,display)
 
 # start by displaying the minutes...
 display.drawTime()
